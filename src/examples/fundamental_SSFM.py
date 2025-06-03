@@ -84,14 +84,14 @@ ynew = y / LD
 
 plt.figure()
 plt.subplot(121)
-plt.pcolormesh(x2, ynew, 10*np.log10(np.abs(np.transpose(AT))**2),
+plt.pcolormesh(x2, ynew, 10*np.log10(np.abs(np.transpose(AT)[:, :-1])**2),
                vmin = mlIT - 20.0, vmax = mlIT, cmap = plt.cm.gray)
 plt.autoscale(tight=True)
 plt.xlim([-4, 4])
 plt.xlabel(r'($T / T_0)$')
 plt.ylabel(r'Distance ($z/L_{NL})$')
 plt.subplot(122)
-plt.pcolormesh(x, ynew, 10*np.log10(np.abs(np.transpose(AW))**2),
+plt.pcolormesh(x, ynew, 10*np.log10(np.abs(np.transpose(AW)[:, :-1])**2),
                vmin = mlIW - 20.0, vmax = mlIW, cmap = plt.cm.gray)
 plt.autoscale(tight=True)
 plt.xlim([-4, 4])
