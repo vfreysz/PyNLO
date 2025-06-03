@@ -50,7 +50,7 @@ AT = np.complex64(np.copy(AW))
 
 y, AW, AT, pulse_out = evol.propagate(pulse_in = init, fiber = fiber1, 
                                          n_steps = steps)
-print pulse_out.calc_epp()
+print(pulse_out.calc_epp())
 wl = init.wl_nm 
 
 loWL = 1000
@@ -64,8 +64,10 @@ xW = wl[iis]
 xT = init.T_ps[iisT]
 zW_in = np.transpose(AW)[:,iis]
 zT_in = np.transpose(AT)[:,iisT]
-zW = 10*np.log10(np.abs(zW_in)**2)
-zT = 10*np.log10(np.abs(zT_in)**2)
+#zW = 10*np.log10(np.abs(zW_in)**2)
+#zT = 10*np.log10(np.abs(zT_in)**2)
+zW = 10*np.log10(np.abs(zW_in)**2 + np.finfo(float).eps)
+zT = 10*np.log10(np.abs(zT_in)**2 + np.finfo(float).eps)
 mlIW = np.max(zW)
 mlIT = np.max(zT)
 
@@ -79,14 +81,19 @@ ynew = y / LD
 
 plt.figure()
 plt.subplot(121)
-plt.pcolormesh(x2, ynew, 10*np.log10(np.abs(np.transpose(AT))**2),
-               vmin = mlIW - 20.0, vmax = mlIW, cmap = plt.cm.gray)
+#C_plot1 = 10*np.log10(np.abs(np.transpose(AT))**2)
+C_plot1 = 10*np.log10(np.abs(np.transpose(AT))**2 + np.finfo(float).eps)
+plt.pcolormesh(x2, ynew, C_plot1[:, :-1],  # On enlève la dernière colonne de C
+               vmin = mlIT - 20.0, vmax = mlIT, cmap = plt.cm.gray) # Correction: mlIT ici, basé sur AT
 plt.autoscale(tight=True)
 plt.xlim([-4, 4])
 plt.xlabel(r'($T / T_0)$')
 plt.ylabel(r'Distance ($z/L_{NL})$')
+
 plt.subplot(122)
-plt.pcolormesh(x, ynew, 10*np.log10(np.abs(np.transpose(AW))**2),
+#C_plot2 = 10*np.log10(np.abs(np.transpose(AW))**2)
+C_plot2 = 10*np.log10(np.abs(np.transpose(AW))**2 + np.finfo(float).eps)
+plt.pcolormesh(x, ynew, C_plot2[:, :-1],  # On enlève la dernière colonne de C
                vmin = mlIW - 20.0, vmax = mlIW, cmap = plt.cm.gray)
 plt.autoscale(tight=True)
 plt.xlim([-4, 4])
