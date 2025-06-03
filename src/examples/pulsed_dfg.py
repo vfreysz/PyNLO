@@ -11,6 +11,7 @@ mixing in periodically poled lithium niobate (PPLN.)
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+plt.rcParams['animation.embed_limit'] = 50 # Mettre la limite à 50 Mo
 
 from pynlo.light.DerivedPulses import GaussianPulse
 from pynlo.media.crystals import PPLN
@@ -181,7 +182,9 @@ def update(ctr):
     line_idlr_f.set_ydata(abs(p.AW)**2 / np.max(res.idlr_max_field**2))
     line_inset.set_ydata(idlr_power_series[0:x])
     line_inset.set_xdata(1000*np.array(res.zs[0:x]))
-anim = animation.FuncAnimation(fig, update, interval=10)
+
+#anim = animation.FuncAnimation(fig, update, interval=10)
+anim = animation.FuncAnimation(fig, update, frames=res.n_saves, save_count=res.n_saves, interval=10)
 HTML(anim.to_jshtml())
 
     
